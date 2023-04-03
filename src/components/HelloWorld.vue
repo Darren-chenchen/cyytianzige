@@ -1,58 +1,72 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <el-upload
+      class="upload-demo"
+      ref="upload"
+      action="https://jsonplaceholder.typicode.com/posts/"
+      :on-preview="handlePreview"
+      :on-remove="handleRemove"
+      :file-list="fileList"
+      :auto-upload="false"
+      :on-change="handleChange"
+    >
+      <el-button slot="trigger" size="small" type="primary">选取文件生成word</el-button>
+    </el-upload>
   </div>
 </template>
 
 <script>
+import { pinyin } from 'pinyin-pro'
+import { saveAs } from 'file-saver'
+// import * as docx from 'docx'
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  data() {
+    return {
+      result: '',
+      fileList: []
+    }
+  },
+  mounted() {},
+  methods: {
+    submitUpload() {
+      // this.$refs.upload.submit()
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList, 2222)
+    },
+    handleChange(file, fileList) {
+      console.log(file, fileList, 223333)
+      this.loadWords(file)
+    },
+    handlePreview(file) {
+      console.log(file, 1111)
+    },
+    async loadWords(file) {
+      const reader = new FileReader()
+      reader.onload = async () => {
+        const text = reader.result
+        const words = text.split(/\s+/)
+        console.log(words)
+        let pinArr = words.map((item) => pinyin(item))
+        console.log(pinArr)
+
+        for (let i = 0; i < pinArr.length; i++) {
+          if (i % 12 == 0 && i != 0) {
+            pinArr.splice(i, 0, '\n\n')
+          }
+        }
+
+        const blob = new Blob([pinArr], { type: 'application/msword' })
+        saveAs(blob, 'myWordDocument.doc')
+      }
+
+      reader.readAsText(file.raw)
+    }
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>

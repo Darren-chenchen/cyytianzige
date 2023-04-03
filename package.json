@@ -3,13 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "core-js": "^3.16.2",
+    "element-ui": "^2.15.13",
+    "exceljs": "^4.3.0",
+    "file-saver": "^2.0.5",
+    "pinyin-pro": "^3.13.2",
+    "vue": "^2.6.11",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.0",
