@@ -4,6 +4,17 @@
       <el-button slot="trigger" size="small" type="warning">选取文件生成excel</el-button>
     </el-upload>
     <canvas id="myCanvas"></canvas>
+
+    <div style="display: flex; align-items: center; margin-top: 60px">
+      <div>
+        <img src="../assets/hanzitxt.png" style="width: 50%" />
+        <div style="margin-top: 12px">源文件txt文件格式</div>
+      </div>
+      <div>
+        <img src="../assets/ciyuexcel.png" style="width: 50%" />
+        <div style="margin-top: 12px">转成excel田字格样式，可打印到A4纸</div>
+      </div>
+    </div>
   </div>
 </template>
 
